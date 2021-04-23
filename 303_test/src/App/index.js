@@ -6,8 +6,9 @@ import {
 } from "@material-ui/core/styles";
 import React from "react";
 import "../styles/App.css";
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
+// import SignIn from "./SignIn";
+// import SignUp from "./SignUp";
+import MainPage from "./MainPage";
 
 const theme = createMuiTheme({
     breakpoints: {
@@ -36,9 +37,9 @@ function App() {
             <CssBaseline />
             <Box className={classes.root}>
                 <Container maxWidth="xl">
-                    <SignIn />
-                    <SignUp />
-                    {/* <MainPage /> */}
+                    {/* <SignIn />
+                    <SignUp /> */}
+                    <MainPage />
                 </Container>
             </Box>
         </ThemeProvider>

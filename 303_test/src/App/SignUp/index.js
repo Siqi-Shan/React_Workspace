@@ -172,7 +172,7 @@ export default function SignIn() {
                             color="secondary"
                             className={classes.submit}
                         >
-                            Register as New User!
+                            Already Have an Account?
                         </Button>
                         <Grid container>
                             <Grid item lg>
