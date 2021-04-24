@@ -2,6 +2,7 @@ import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
+import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -17,7 +18,10 @@ import MailIcon from "@material-ui/icons/Mail";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import clsx from "clsx";
 import React, { useState } from "react";
+import BillCard from "./BillCard";
 import BudgetCard from "./BudgetCard";
+import DebtCard from "./DebtCard";
+import RelationCard from "./RelationCard";
 
 const drawerWidth = 240;
 
@@ -79,7 +83,11 @@ const useStyles = makeStyles((theme) => ({
     },
     content: {
         flexGrow: 1,
-        padding: theme.spacing(8, "10vh", 0, "10vh"),
+        padding: theme.spacing(8, "5vh", 0, "5vh"),
+    },
+    card: {
+        width: "100%",
+        padding: theme.spacing(1),
     },
 }));
 
@@ -173,9 +181,51 @@ export default function MainPage() {
                     ))}
                 </List>
             </Drawer>
-            <main className={classes.content}>
+            <div className={classes.content}>
                 <div className={classes.toolbar} />
-                <BudgetCard />
+                <Grid container>
+                    <Grid
+                        item
+                        className={classes.card}
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        lg={6}
+                    >
+                        <BudgetCard />
+                    </Grid>
+                    <Grid
+                        item
+                        className={classes.card}
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        lg={6}
+                    >
+                        <BillCard />
+                    </Grid>
+                    <Grid
+                        item
+                        className={classes.card}
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        lg={6}
+                    >
+                        <DebtCard />
+                    </Grid>
+                    <Grid
+                        item
+                        className={classes.card}
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        lg={6}
+                    >
+                        <RelationCard />
+                    </Grid>
+                </Grid>
+
                 {/* <Typography paragraph>
                     Consequat mauris nunc congue nisi vitae suscipit. Fringilla
                     est ullamcorper eget nulla facilisi etiam dignissim diam.
@@ -192,7 +242,7 @@ export default function MainPage() {
                     accumsan lacus vel facilisis. Nulla posuere sollicitudin
                     aliquam ultrices sagittis orci a.
                 </Typography> */}
-            </main>
+            </div>
         </div>
     );
 }

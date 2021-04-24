@@ -6,11 +6,11 @@ import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import DateRangeIcon from "@material-ui/icons/DateRange";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
-import TrendingUpIcon from "@material-ui/icons/TrendingUp";
+import QueueIcon from "@material-ui/icons/Queue";
 import React from "react";
-import BudgetProgress from "./BudgetProgress";
+import BudgetProportion from "./BudgetProportion";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -66,7 +66,7 @@ export default function BudgetCard() {
                             color="textSecondary"
                             gutterBottom
                         >
-                            Your Budget Tracking
+                            Most Recent Bill
                         </Typography>
                         <Typography variant="h5" component="h2">
                             April, 2021
@@ -75,7 +75,7 @@ export default function BudgetCard() {
                             className={classes.pos}
                             color="textSecondary"
                         >
-                            Updated 12:00:00 PM, 4/23/2021
+                            Time: 12:00:00 PM, 4/23/2021
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={12} md={12} lg={true}>
@@ -92,17 +92,17 @@ export default function BudgetCard() {
                             color="textSecondary"
                             gutterBottom
                         >
-                            Current Balance
+                            Bill Amount
                         </Typography>
                         <Typography
                             variant="h5"
                             component="h2"
                             className={classes.budgetNum}
                         >
-                            $ 999.99
+                            $ 99.99
                         </Typography>
                         <div className={classes.budgetProgress}>
-                            <BudgetProgress value={50} />
+                            <BudgetProportion value={10} />
                         </div>
                     </Grid>
                     <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -117,13 +117,11 @@ export default function BudgetCard() {
             <CardContent>
                 <ButtonGroup variant="contained" color="secondary" fullWidth>
                     <Button startIcon={<EditIcon />}>
-                        Edit Current Month Budget
+                        Edit Most Current Bill
                     </Button>
-                    <Button startIcon={<TrendingUpIcon />}>
-                        Edit Current Month Budget Target
-                    </Button>
-                    <Button startIcon={<DateRangeIcon />}>
-                        Set New Monthly Budget
+                    <Button startIcon={<QueueIcon />}>Add a New Bill</Button>
+                    <Button startIcon={<DeleteForeverIcon />}>
+                        Remove This Bill
                     </Button>
                 </ButtonGroup>
             </CardContent>

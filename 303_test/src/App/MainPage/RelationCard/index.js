@@ -6,11 +6,11 @@ import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import DateRangeIcon from "@material-ui/icons/DateRange";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
-import TrendingUpIcon from "@material-ui/icons/TrendingUp";
+import QueueIcon from "@material-ui/icons/Queue";
 import React from "react";
-import BudgetProgress from "./BudgetProgress";
+import DebtProgress from "./DebtProgress";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -66,16 +66,16 @@ export default function BudgetCard() {
                             color="textSecondary"
                             gutterBottom
                         >
-                            Your Budget Tracking
+                            Highest Debt Relation
                         </Typography>
                         <Typography variant="h5" component="h2">
-                            April, 2021
+                            John Doe
                         </Typography>
                         <Typography
                             className={classes.pos}
                             color="textSecondary"
                         >
-                            Updated 12:00:00 PM, 4/23/2021
+                            Last Debt: 12:00:00 PM, 4/23/2021
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={12} md={12} lg={true}>
@@ -92,17 +92,17 @@ export default function BudgetCard() {
                             color="textSecondary"
                             gutterBottom
                         >
-                            Current Balance
+                            Debt Amount
                         </Typography>
                         <Typography
                             variant="h5"
                             component="h2"
                             className={classes.budgetNum}
                         >
-                            $ 999.99
+                            $ 59.99
                         </Typography>
                         <div className={classes.budgetProgress}>
-                            <BudgetProgress value={50} />
+                            <DebtProgress value={25} />
                         </div>
                     </Grid>
                     <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -116,14 +116,14 @@ export default function BudgetCard() {
             </CardContent>
             <CardContent>
                 <ButtonGroup variant="contained" color="secondary" fullWidth>
+                    <Button startIcon={<QueueIcon />}>
+                        Add a New Debt to This Person
+                    </Button>
                     <Button startIcon={<EditIcon />}>
-                        Edit Current Month Budget
+                        Edit This Person's Debt
                     </Button>
-                    <Button startIcon={<TrendingUpIcon />}>
-                        Edit Current Month Budget Target
-                    </Button>
-                    <Button startIcon={<DateRangeIcon />}>
-                        Set New Monthly Budget
+                    <Button startIcon={<DeleteForeverIcon />}>
+                        Remove This Person's Debt
                     </Button>
                 </ButtonGroup>
             </CardContent>

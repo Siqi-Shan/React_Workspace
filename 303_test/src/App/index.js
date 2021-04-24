@@ -16,8 +16,8 @@ const theme = createMuiTheme({
             xs: 0,
             sm: 576,
             md: 768,
-            lg: 992,
-            xl: 1400,
+            lg: 1100,
+            xl: 2000,
         },
     },
     palette: {
