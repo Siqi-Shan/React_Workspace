@@ -1,9 +1,8 @@
 import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
-import Link from "@material-ui/core/Link";
-import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -14,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
         height: "90vh",
         marginTop: "5vh",
+        marginBottom: "5vh",
     },
     image: {
         backgroundImage: "url(https://source.unsplash.com/random)",
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundPosition: "center",
     },
     paper: {
-        margin: theme.spacing(8, 4),
+        margin: theme.spacing(6, 4),
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -82,12 +82,7 @@ export default function SignIn({ toggle, onSignUpSubmit }) {
     };
 
     return (
-        <Grid
-            container
-            component={Paper}
-            className={classes.root}
-            elevation={24}
-        >
+        <Grid container className={classes.root} component={Card} raised>
             <Grid
                 item
                 xs={false}
@@ -176,7 +171,6 @@ export default function SignIn({ toggle, onSignUpSubmit }) {
                         />
                     </form>
                     <Button
-                        type="submit"
                         fullWidth
                         variant="contained"
                         color="secondary"
@@ -185,13 +179,6 @@ export default function SignIn({ toggle, onSignUpSubmit }) {
                     >
                         Already Have an Account?
                     </Button>
-                    <Grid container>
-                        <Grid item lg>
-                            <Link href="#" color="secondary">
-                                Forgot password?
-                            </Link>
-                        </Grid>
-                    </Grid>
                 </div>
             </Grid>
         </Grid>

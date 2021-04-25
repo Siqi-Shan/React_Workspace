@@ -7,9 +7,8 @@ import {
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import { UserAuthProvider } from "../contexts/UserAuthProvider";
+import AppRoute from "../pages/AppRoute";
 import "../styles/App.css";
-import UserAccess from "./UserAccess";
-// import MainPage from "./MainPage";
 
 const theme = createMuiTheme({
     breakpoints: {
@@ -40,8 +39,7 @@ function App() {
                     <CssBaseline />
                     <Box className={classes.root}>
                         <Container maxWidth="xl">
-                            <UserAccess />
-                            {/* <MainPage /> */}
+                            <AppRoute />
                         </Container>
                     </Box>
                 </ThemeProvider>
