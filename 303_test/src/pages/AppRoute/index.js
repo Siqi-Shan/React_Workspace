@@ -5,8 +5,8 @@ import UserAccess from "../../components/UserAccess";
 const AppRoute = () => {
     return (
         <Switch>
-            <Route exact path="/" component={UserAccess} />
-            <Route exact path="/dashboard" component={MainPage} />
+            <Route path="/dashboard" component={MainPage} />
+            <Route path="/" component={UserAccess} />
             <Redirect to="/" />
         </Switch>
     );

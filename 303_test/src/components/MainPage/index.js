@@ -16,14 +16,12 @@ import ListIcon from "@material-ui/icons/List";
 import MailIcon from "@material-ui/icons/Mail";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import clsx from "clsx";
-import React, { useState } from "react";
-// import BillCard from "./BillCard";
-// import BudgetCard from "./BudgetCard";
-// import DebtCard from "./DebtCard";
-// import RelationCard from "./RelationCard";
-import NewBill from "./NewBill";
+import React, { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router";
+import { AuthContext } from "../../contexts/UserAuthProvider";
+import DashboardRoute from "../../pages/DashboardRoute";
 
-const drawerWidth = 240;
+const drawerWidth = 220;
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
+        backgroundColor: theme.palette.secondary.dark,
     },
     appBarShift: {
         marginLeft: drawerWidth,
@@ -83,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
     },
     content: {
         flexGrow: 1,
-        padding: theme.spacing(8, "5vh", 0, "5vh"),
+        padding: theme.spacing(5, "5vh", 0, "5vh"),
     },
     card: {
         width: "100%",
@@ -95,6 +94,15 @@ export default function MainPage() {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = useState(false);
+
+    const authContext = useContext(AuthContext);
+    const history = useHistory();
+
+    useEffect(() => {
+        if (!authContext.isSignedIn) {
+            history.push("/");
+        }
+    });
 
     const onDrawerOpen = () => {
         setOpen(true);
@@ -126,7 +134,7 @@ export default function MainPage() {
                         <ListIcon style={{ fontSize: 30 }} />
                     </IconButton>
                     <Typography variant="h6" noWrap>
-                        Budget MENU
+                        Your Budget DASHBOARD
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -183,67 +191,7 @@ export default function MainPage() {
             </Drawer>
             <div className={classes.content}>
                 <div className={classes.toolbar} />
-                {/* <Grid container>
-                    <Grid
-                        item
-                        className={classes.card}
-                        xs={12}
-                        sm={12}
-                        md={12}
-                        lg={6}
-                    >
-                        <BudgetCard />
-                    </Grid>
-                    <Grid
-                        item
-                        className={classes.card}
-                        xs={12}
-                        sm={12}
-                        md={12}
-                        lg={6}
-                    >
-                        <BillCard />
-                    </Grid>
-                    <Grid
-                        item
-                        className={classes.card}
-                        xs={12}
-                        sm={12}
-                        md={12}
-                        lg={6}
-                    >
-                        <DebtCard />
-                    </Grid>
-                    <Grid
-                        item
-                        className={classes.card}
-                        xs={12}
-                        sm={12}
-                        md={12}
-                        lg={6}
-                    >
-                        <RelationCard />
-                    </Grid>
-                </Grid> */}
-
-                <NewBill />
-
-                {/* <Typography paragraph>
-                    Consequat mauris nunc congue nisi vitae suscipit. Fringilla
-                    est ullamcorper eget nulla facilisi etiam dignissim diam.
-                    Pulvinar elementum integer enim neque volutpat ac tincidunt.
-                    Ornare suspendisse sed nisi lacus sed viverra tellus. Purus
-                    sit amet volutpat consequat mauris. Elementum eu facilisis
-                    sed odio morbi. Euismod lacinia at quis risus sed vulputate
-                    odio. Morbi tincidunt ornare massa eget egestas purus
-                    viverra accumsan in. In hendrerit gravida rutrum quisque non
-                    tellus orci ac. Pellentesque nec nam aliquam sem et tortor.
-                    Habitant morbi tristique senectus et. Adipiscing elit duis
-                    tristique sollicitudin nibh sit. Ornare aenean euismod
-                    elementum nisi quis eleifend. Commodo viverra maecenas
-                    accumsan lacus vel facilisis. Nulla posuere sollicitudin
-                    aliquam ultrices sagittis orci a.
-                </Typography> */}
+                <DashboardRoute />
             </div>
         </div>
     );

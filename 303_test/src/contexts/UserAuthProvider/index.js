@@ -1,6 +1,5 @@
 import { createContext, useState } from "react";
 import { useHistory } from "react-router";
-import UserAccess from "../../adapters/UserAccess";
 
 export const AuthContext = createContext({
     username: "",
@@ -26,16 +25,24 @@ export const UserAuthProvider = ({ children }) => {
     }
 
     function onSignInSubmit({ username, password }) {
-        console.log(username, password);
-
-        UserAccess.post("/login.php", {
-            username: username,
-            password: password,
-        });
-
-        // setLoggedIn(true);
-        // setUsername("David");
-        // history.push("/products");
+        // UserAccess.post("/login.php", {
+        //     username: username,
+        //     password: password,
+        // })
+        //     .then(function (response) {
+        //         if (response.data.status_code === 200) {
+        //             setSignedIn(true);
+        //             setUsername("Kevin");
+        //             history.push("/dashboard");
+        //         } else {
+        //             history.push("/");
+        //         }
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //     });
+        setSignedIn(true);
+        history.push("/dashboard");
     }
 
     return (

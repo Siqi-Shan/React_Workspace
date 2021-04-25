@@ -21,10 +21,11 @@ import React, { useState } from "react";
 const useStyles = makeStyles((theme) => ({
     root: {},
     paper: {
-        margin: theme.spacing(1, "3vh", 1, "3vh"),
+        margin: theme.spacing(0, "3vh", 5, "3vh"),
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        maxWidth: "1600px",
     },
     paperContent: {
         padding: theme.spacing(5),

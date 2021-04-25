@@ -5,7 +5,7 @@ import {
     ThemeProvider,
 } from "@material-ui/core/styles";
 import React from "react";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { UserAuthProvider } from "../contexts/UserAuthProvider";
 import AppRoute from "../pages/AppRoute";
 import "../styles/App.css";
@@ -33,7 +33,7 @@ function App() {
     const classes = useStyles();
 
     return (
-        <BrowserRouter>
+        <HashRouter>
             <UserAuthProvider>
                 <ThemeProvider theme={theme}>
                     <CssBaseline />
@@ -44,7 +44,7 @@ function App() {
                     </Box>
                 </ThemeProvider>
             </UserAuthProvider>
-        </BrowserRouter>
+        </HashRouter>
     );
 }
 
