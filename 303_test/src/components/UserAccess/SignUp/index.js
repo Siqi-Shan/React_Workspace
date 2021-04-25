@@ -9,7 +9,6 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import PersonAddRoundedIcon from "@material-ui/icons/PersonAddRounded";
 import React, { useState } from "react";
-import SignInAPI from "../../adapters/SignInAPI";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -45,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignIn() {
+export default function SignIn({ toggle, onSignUpSubmit }) {
     const [input, setInput] = useState({
         username: "",
         password: "",
@@ -66,10 +65,19 @@ export default function SignIn() {
 
     const onFormSubmit = (e) => {
         e.preventDefault();
-        SignInAPI.post("/login.php", {
+
+        onSignUpSubmit({
             username: input.username,
             password: input.password,
             email: input.email,
+        });
+    };
+
+    const onFormReset = () => {
+        setInput({
+            username: "",
+            password: "",
+            email: "",
         });
     };
 
@@ -105,6 +113,7 @@ export default function SignIn() {
                             id="email"
                             label="Email Address"
                             name="email"
+                            type="email"
                             autoComplete="email"
                             autoFocus
                             color="secondary"
@@ -151,11 +160,11 @@ export default function SignIn() {
                             Sign Up
                         </Button>
                         <Button
-                            type="reset"
                             fullWidth
                             variant="outlined"
                             color="secondary"
                             className={classes.submit}
+                            onClick={() => onFormReset()}
                         >
                             Reset
                         </Button>
@@ -165,23 +174,24 @@ export default function SignIn() {
                             mt={2}
                             mb={2}
                         />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="secondary"
-                            className={classes.submit}
-                        >
-                            Already Have an Account?
-                        </Button>
-                        <Grid container>
-                            <Grid item lg>
-                                <Link href="#" color="secondary">
-                                    Forgot password?
-                                </Link>
-                            </Grid>
-                        </Grid>
                     </form>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="secondary"
+                        className={classes.submit}
+                        onClick={toggle}
+                    >
+                        Already Have an Account?
+                    </Button>
+                    <Grid container>
+                        <Grid item lg>
+                            <Link href="#" color="secondary">
+                                Forgot password?
+                            </Link>
+                        </Grid>
+                    </Grid>
                 </div>
             </Grid>
         </Grid>

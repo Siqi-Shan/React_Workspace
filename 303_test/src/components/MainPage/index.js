@@ -2,7 +2,6 @@ import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
-import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -18,10 +17,11 @@ import MailIcon from "@material-ui/icons/Mail";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import clsx from "clsx";
 import React, { useState } from "react";
-import BillCard from "./BillCard";
-import BudgetCard from "./BudgetCard";
-import DebtCard from "./DebtCard";
-import RelationCard from "./RelationCard";
+// import BillCard from "./BillCard";
+// import BudgetCard from "./BudgetCard";
+// import DebtCard from "./DebtCard";
+// import RelationCard from "./RelationCard";
+import NewBill from "./NewBill";
 
 const drawerWidth = 240;
 
@@ -183,7 +183,7 @@ export default function MainPage() {
             </Drawer>
             <div className={classes.content}>
                 <div className={classes.toolbar} />
-                <Grid container>
+                {/* <Grid container>
                     <Grid
                         item
                         className={classes.card}
@@ -224,7 +224,9 @@ export default function MainPage() {
                     >
                         <RelationCard />
                     </Grid>
-                </Grid>
+                </Grid> */}
+
+                <NewBill />
 
                 {/* <Typography paragraph>
                     Consequat mauris nunc congue nisi vitae suscipit. Fringilla

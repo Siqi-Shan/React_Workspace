@@ -11,7 +11,6 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import React, { useState } from "react";
-import SignInAPI from "../../adapters/SignInAPI";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -33,8 +32,8 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
         margin: theme.spacing(3),
         backgroundColor: theme.palette.info.main,
-        width: 65,
-        height: 65,
+        width: 70,
+        height: 70,
     },
     form: {
         marginTop: theme.spacing(1),
@@ -47,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignIn() {
+export default function SignIn({ toggle, onSignInSubmit }) {
     const [input, setInput] = useState({
         username: "",
         password: "",
@@ -67,9 +66,17 @@ export default function SignIn() {
 
     const onFormSubmit = (e) => {
         e.preventDefault();
-        SignInAPI.post("/login.php", {
+
+        onSignInSubmit({
             username: input.username,
             password: input.password,
+        });
+    };
+
+    const onFormReset = () => {
+        setInput({
+            username: "",
+            password: "",
         });
     };
 
@@ -91,7 +98,7 @@ export default function SignIn() {
             <Grid item xs={12} sm={12} md={7} lg={5}>
                 <div className={classes.paper}>
                     <Avatar className={classes.avatar}>
-                        <AccountCircleIcon style={{ fontSize: 60 }} />
+                        <AccountCircleIcon style={{ fontSize: 65 }} />
                     </Avatar>
                     <Typography component="h1" variant="h4">
                         Sign In
@@ -143,11 +150,11 @@ export default function SignIn() {
                             Sign In
                         </Button>
                         <Button
-                            type="reset"
                             fullWidth
                             variant="outlined"
                             color="secondary"
                             className={classes.submit}
+                            onClick={() => onFormReset()}
                         >
                             Reset
                         </Button>
@@ -157,23 +164,23 @@ export default function SignIn() {
                             mt={2}
                             mb={2}
                         />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="secondary"
-                            className={classes.submit}
-                        >
-                            Register as New User!
-                        </Button>
-                        <Grid container>
-                            <Grid item lg>
-                                <Link href="#" color="secondary">
-                                    Forgot password?
-                                </Link>
-                            </Grid>
-                        </Grid>
                     </form>
+                    <Button
+                        fullWidth
+                        variant="contained"
+                        color="secondary"
+                        className={classes.submit}
+                        onClick={toggle}
+                    >
+                        Register as New User!
+                    </Button>
+                    <Grid container>
+                        <Grid item lg>
+                            <Link href="#" color="secondary">
+                                Forgot password?
+                            </Link>
+                        </Grid>
+                    </Grid>
                 </div>
             </Grid>
         </Grid>
