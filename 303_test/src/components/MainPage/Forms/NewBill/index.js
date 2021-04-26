@@ -10,7 +10,7 @@ import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import MoneyRoundedIcon from "@material-ui/icons/MoneyRounded";
 import {
     KeyboardDatePicker,
     MuiPickersUtilsProvider,
@@ -96,7 +96,7 @@ export default function NewBill() {
         <div className={classes.paper}>
             <Paper className={classes.paperContent} elevation={24}>
                 <Avatar className={classes.avatar}>
-                    <AccountCircleIcon style={{ fontSize: 60 }} />
+                    <MoneyRoundedIcon style={{ fontSize: 55 }} />
                 </Avatar>
                 <Typography component="h1" variant="h4">
                     Add New Bill

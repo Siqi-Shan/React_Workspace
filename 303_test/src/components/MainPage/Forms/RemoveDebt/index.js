@@ -8,7 +8,7 @@ import Paper from "@material-ui/core/Paper";
 import Select from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import MoneyOffIcon from "@material-ui/icons/MoneyOffRounded";
 import "date-fns";
 import React, { useState } from "react";
 
@@ -84,7 +84,7 @@ export default function RemoveDebt() {
         <div className={classes.paper}>
             <Paper className={classes.paperContent} elevation={24}>
                 <Avatar className={classes.avatar}>
-                    <AccountCircleIcon style={{ fontSize: 60 }} />
+                    <MoneyOffIcon style={{ fontSize: 60 }} />
                 </Avatar>
                 <Typography component="h1" variant="h4">
                     Edit This Debt

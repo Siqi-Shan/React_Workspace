@@ -11,7 +11,7 @@ import Select from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import AttachMoneyRoundedIcon from "@material-ui/icons/AttachMoneyRounded";
 import "date-fns";
 import React, { useState } from "react";
 
@@ -91,7 +91,7 @@ export default function NewDebt() {
         <div className={classes.paper}>
             <Paper className={classes.paperContent} elevation={24}>
                 <Avatar className={classes.avatar}>
-                    <AccountCircleIcon style={{ fontSize: 60 }} />
+                    <AttachMoneyRoundedIcon style={{ fontSize: 60 }} />
                 </Avatar>
                 <Typography component="h1" variant="h4">
                     Create A New Debt
