@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignIn() {
+export default function EditBill() {
     const [input, setInput] = useState({
         amount: "",
         comment: "",
@@ -82,6 +82,8 @@ export default function SignIn() {
     const onFormReset = () => {
         setInput({
             amount: "",
+            comment: "",
+            people: "",
         });
         handleDateChange(new Date());
     };
@@ -97,7 +99,7 @@ export default function SignIn() {
                     <AccountCircleIcon style={{ fontSize: 60 }} />
                 </Avatar>
                 <Typography component="h1" variant="h4">
-                    Add New Bill
+                    Edit This Bill
                 </Typography>
                 <form className={classes.form} onSubmit={onFormSubmit}>
                     <FormControl
@@ -181,7 +183,7 @@ export default function SignIn() {
                         color="primary"
                         className={classes.submit}
                     >
-                        Add!
+                        Edit!
                     </Button>
                     <Button
                         fullWidth
@@ -199,14 +201,6 @@ export default function SignIn() {
                         mb={2}
                     />
                 </form>
-                <Button
-                    fullWidth
-                    variant="contained"
-                    color="secondary"
-                    className={classes.extra}
-                >
-                    Edit Another Bill
-                </Button>
             </Paper>
         </div>
     );

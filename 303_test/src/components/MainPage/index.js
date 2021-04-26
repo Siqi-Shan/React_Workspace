@@ -10,14 +10,18 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import EditIcon from "@material-ui/icons/Edit";
 import ListIcon from "@material-ui/icons/List";
-import MailIcon from "@material-ui/icons/Mail";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
+import QueueIcon from "@material-ui/icons/Queue";
+import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import clsx from "clsx";
 import React, { useContext, useEffect, useState } from "react";
-import { useHistory } from "react-router";
+import { Link, useHistory, useRouteMatch } from "react-router-dom";
 import { AuthContext } from "../../contexts/UserAuthProvider";
 import DashboardRoute from "../../pages/DashboardRoute";
 
@@ -88,12 +92,17 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
         padding: theme.spacing(1),
     },
+    routeLink: {
+        color: "inherit",
+        textDecoration: "inherit",
+    },
 }));
 
 export default function MainPage() {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = useState(false);
+    const match = useRouteMatch();
 
     const authContext = useContext(AuthContext);
     const history = useHistory();
@@ -134,7 +143,13 @@ export default function MainPage() {
                         <ListIcon style={{ fontSize: 30 }} />
                     </IconButton>
                     <Typography variant="h6" noWrap>
-                        Your Budget DASHBOARD
+                        <Link
+                            to={match.path}
+                            className={classes.routeLink}
+                            replace
+                        >
+                            Budget Manager
+                        </Link>
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -162,32 +177,85 @@ export default function MainPage() {
                 </div>
                 <Divider />
                 <List>
-                    {["Inbox", "Starred", "Send email", "Drafts"].map(
-                        (text, index) => (
-                            <ListItem button key={text}>
-                                <ListItemIcon>
-                                    {index % 2 === 0 ? (
-                                        <InboxIcon />
-                                    ) : (
-                                        <MailIcon />
-                                    )}
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItem>
-                        )
-                    )}
+                    <Link to={match.path} className={classes.routeLink} replace>
+                        <ListItem button>
+                            <ListItemIcon>
+                                <DashboardIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Dashboard" />
+                        </ListItem>
+                    </Link>
                 </List>
                 <Divider />
                 <List>
-                    {["All mail", "Trash", "Spam"].map((text, index) => (
-                        <ListItem button key={text}>
+                    <Link
+                        to={`${match.path}/newbudget`}
+                        className={classes.routeLink}
+                        replace
+                    >
+                        <ListItem button>
                             <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                                <QueueIcon />
                             </ListItemIcon>
-                            <ListItemText primary={text} />
+                            <ListItemText primary="Add New Budget" />
                         </ListItem>
-                    ))}
+                    </Link>
+                    <Link
+                        to={`${match.path}/editbudget`}
+                        className={classes.routeLink}
+                        replace
+                    >
+                        <ListItem button>
+                            <ListItemIcon>
+                                <TrendingUpIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Edit Budget" />
+                        </ListItem>
+                    </Link>
                 </List>
+                <Divider />
+                <List>
+                    <Link
+                        to={`${match.path}/addnewbill`}
+                        className={classes.routeLink}
+                        replace
+                    >
+                        <ListItem button>
+                            <ListItemIcon>
+                                <AttachMoneyIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Add New Bill" />
+                        </ListItem>
+                    </Link>
+                    <Link
+                        to={`${match.path}/editbill`}
+                        className={classes.routeLink}
+                        replace
+                    >
+                        <ListItem button>
+                            <ListItemIcon>
+                                <EditIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Edit Bill" />
+                        </ListItem>
+                    </Link>
+                </List>
+                <Divider />
+                <List>
+                    <Link
+                        to={`${match.path}/removedebt`}
+                        className={classes.routeLink}
+                        replace
+                    >
+                        <ListItem button>
+                            <ListItemIcon>
+                                <DeleteForeverIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Remove Debt" />
+                        </ListItem>
+                    </Link>
+                </List>
+                <Divider />
             </Drawer>
             <div className={classes.content}>
                 <div className={classes.toolbar} />

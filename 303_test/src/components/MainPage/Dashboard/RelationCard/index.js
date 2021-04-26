@@ -10,6 +10,7 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
 import QueueIcon from "@material-ui/icons/Queue";
 import React from "react";
+import { Link, useRouteMatch } from "react-router-dom";
 import DebtProgress from "./DebtProgress";
 
 const useStyles = makeStyles((theme) => ({
@@ -50,11 +51,15 @@ const useStyles = makeStyles((theme) => ({
         marginRight: "auto",
         borderColor: theme.palette.action.disabled,
     },
+    routeLink: {
+        color: "inherit",
+        textDecoration: "inherit",
+    },
 }));
 
 export default function BudgetCard() {
     const classes = useStyles();
-    const bull = <span className={classes.bullet}>•</span>;
+    const match = useRouteMatch();
 
     return (
         <Card className={classes.root} raised>
@@ -117,13 +122,28 @@ export default function BudgetCard() {
             <CardContent>
                 <ButtonGroup variant="contained" color="secondary" fullWidth>
                     <Button startIcon={<QueueIcon />}>
-                        Add a New Debt to This Person
+                        <Link
+                            to={`${match.path}/newdebt`}
+                            className={classes.routeLink}
+                        >
+                            Add a New Debt to This Person
+                        </Link>
                     </Button>
                     <Button startIcon={<EditIcon />}>
-                        Edit This Person's Debt
+                        <Link
+                            to={`${match.path}/editdebt`}
+                            className={classes.routeLink}
+                        >
+                            Edit This Person's Debt
+                        </Link>
                     </Button>
                     <Button startIcon={<DeleteForeverIcon />}>
-                        Remove This Person's Debt
+                        <Link
+                            to={`${match.path}/removedebt`}
+                            className={classes.routeLink}
+                        >
+                            Remove This Person's Debt
+                        </Link>
                     </Button>
                 </ButtonGroup>
             </CardContent>

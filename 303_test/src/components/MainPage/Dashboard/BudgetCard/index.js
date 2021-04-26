@@ -6,7 +6,6 @@ import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import DateRangeIcon from "@material-ui/icons/DateRange";
 import EditIcon from "@material-ui/icons/Edit";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import React from "react";
@@ -59,8 +58,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function BudgetCard() {
     const classes = useStyles();
-    const bull = <span className={classes.bullet}>•</span>;
-    let match = useRouteMatch();
+    const match = useRouteMatch();
 
     return (
         <Card className={classes.root} raised>
@@ -124,17 +122,19 @@ export default function BudgetCard() {
                 <ButtonGroup variant="contained" color="secondary" fullWidth>
                     <Button startIcon={<EditIcon />}>
                         <Link
-                            to={`${match.path}/addnewbill`}
+                            to={`${match.path}/newbudget`}
                             className={classes.routeLink}
                         >
-                            Edit Current Month Budget
+                            Add New Current Month Budget
                         </Link>
                     </Button>
                     <Button startIcon={<TrendingUpIcon />}>
-                        Edit Current Month Budget Target
-                    </Button>
-                    <Button startIcon={<DateRangeIcon />}>
-                        Set New Monthly Budget
+                        <Link
+                            to={`${match.path}/editbudget`}
+                            className={classes.routeLink}
+                        >
+                            Edit Current Month Budget Target
+                        </Link>
                     </Button>
                 </ButtonGroup>
             </CardContent>

@@ -6,10 +6,10 @@ import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
 import QueueIcon from "@material-ui/icons/Queue";
 import React from "react";
+import { Link, useRouteMatch } from "react-router-dom";
 import BudgetProportion from "./BudgetProportion";
 
 const useStyles = makeStyles((theme) => ({
@@ -50,11 +50,15 @@ const useStyles = makeStyles((theme) => ({
         marginRight: "auto",
         borderColor: theme.palette.action.disabled,
     },
+    routeLink: {
+        color: "inherit",
+        textDecoration: "inherit",
+    },
 }));
 
 export default function BudgetCard() {
     const classes = useStyles();
-    const bull = <span className={classes.bullet}>•</span>;
+    const match = useRouteMatch();
 
     return (
         <Card className={classes.root} raised>
@@ -117,11 +121,20 @@ export default function BudgetCard() {
             <CardContent>
                 <ButtonGroup variant="contained" color="secondary" fullWidth>
                     <Button startIcon={<EditIcon />}>
-                        Edit Most Current Bill
+                        <Link
+                            to={`${match.path}/editbill`}
+                            className={classes.routeLink}
+                        >
+                            Edit Most Current Bill
+                        </Link>
                     </Button>
-                    <Button startIcon={<QueueIcon />}>Add a New Bill</Button>
-                    <Button startIcon={<DeleteForeverIcon />}>
-                        Remove This Bill
+                    <Button startIcon={<QueueIcon />}>
+                        <Link
+                            to={`${match.path}/addnewbill`}
+                            className={classes.routeLink}
+                        >
+                            Add a New Bill
+                        </Link>
                     </Button>
                 </ButtonGroup>
             </CardContent>
