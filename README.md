@@ -1,4 +1,4 @@
 ## React_Workspace
-* Workplace Repository for React Projects
+* Workspace Repository for React Projects
 * Kevin Shan
 * kshan@usc.edu
