@@ -10,15 +10,15 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import AddBoxIcon from "@material-ui/icons/AddBox";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import DescriptionIcon from "@material-ui/icons/Description";
 import EditIcon from "@material-ui/icons/Edit";
 import ListIcon from "@material-ui/icons/List";
-import QueueIcon from "@material-ui/icons/Queue";
-import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import clsx from "clsx";
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
@@ -189,27 +189,27 @@ export default function MainPage() {
                 <Divider />
                 <List>
                     <Link
-                        to={`${match.path}/newbudget`}
+                        to={`${match.path}/billboard`}
                         className={classes.routeLink}
                         replace
                     >
                         <ListItem button>
                             <ListItemIcon>
-                                <QueueIcon />
+                                <DescriptionIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Add New Budget" />
+                            <ListItemText primary="Bills Tracking" />
                         </ListItem>
                     </Link>
                     <Link
-                        to={`${match.path}/editbudget`}
+                        to={`${match.path}/addnewbill`}
                         className={classes.routeLink}
                         replace
                     >
                         <ListItem button>
                             <ListItemIcon>
-                                <TrendingUpIcon />
+                                <AddBoxIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Edit Budget" />
+                            <ListItemText primary="Add New Bill" />
                         </ListItem>
                     </Link>
                 </List>

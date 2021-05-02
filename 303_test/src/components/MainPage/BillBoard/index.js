@@ -1,5 +1,6 @@
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import UserAccess from "../../../adapters/UserAccess";
@@ -82,5 +83,14 @@ export default function BillBoard() {
         return bills;
     };
 
-    return <Grid container>{getBillList()}</Grid>;
+    return (
+        <Grid container>
+            <Grid item className={classes.card} xs={12} sm={12} md={12} lg={12}>
+                <Typography variant="h4" noWrap gutterBottom>
+                    Your Bills Tracking
+                </Typography>
+            </Grid>
+            {getBillList()}
+        </Grid>
+    );
 }
