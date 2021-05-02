@@ -1,5 +1,4 @@
 import Avatar from "@material-ui/core/Avatar";
-import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
@@ -7,6 +6,8 @@ import Typography from "@material-ui/core/Typography";
 import MoneyOffIcon from "@material-ui/icons/MoneyOffRounded";
 import "date-fns";
 import React from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import UserAccess from "../../../../adapters/UserAccess";
 
 const useStyles = makeStyles((theme) => ({
     root: {},
@@ -51,9 +52,25 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RemoveBill() {
     const classes = useStyles();
+    const history = useHistory();
+    const { search } = useLocation();
+
+    const billID = new URLSearchParams(search).get("id");
 
     const onFormSubmit = (e) => {
         e.preventDefault();
+
+        (async () => {
+            const response = await UserAccess.post("/remove-bill.php", {
+                bill_id: billID,
+            });
+
+            if (response.data.status_code === 200) {
+                history.push("/dashboard/billboard");
+            } else {
+                alert(response.data.message);
+            }
+        })();
     };
 
     return (
@@ -103,12 +120,6 @@ export default function RemoveBill() {
                     >
                         Remove!
                     </Button>
-                    <Box
-                        borderBottom={2}
-                        className={classes.border}
-                        mt={2}
-                        mb={2}
-                    />
                 </form>
             </Paper>
         </div>

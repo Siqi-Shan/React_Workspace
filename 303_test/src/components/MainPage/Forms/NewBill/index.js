@@ -1,6 +1,5 @@
 import DateFnsUtils from "@date-io/date-fns";
 import Avatar from "@material-ui/core/Avatar";
-import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -106,7 +105,7 @@ export default function NewBill() {
             });
 
             if (response.data.status_code === 200) {
-                history.push("/dashboard");
+                history.push("/dashboard/billboard");
             } else {
                 alert(response.data.message);
             }
@@ -216,12 +215,6 @@ export default function NewBill() {
                     >
                         Reset
                     </Button>
-                    <Box
-                        borderBottom={2}
-                        className={classes.border}
-                        mt={2}
-                        mb={2}
-                    />
                 </form>
             </Paper>
         </div>

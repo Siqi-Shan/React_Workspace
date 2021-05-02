@@ -106,7 +106,7 @@ export default function EditBill() {
             });
 
             if (response.data.status_code === 200) {
-                history.push("/dashboard");
+                history.push("/dashboard/billboard");
             } else if (response.data.status_code === 500) {
                 alert(response.data.message);
             } else if (response.data.status_code === 401) {

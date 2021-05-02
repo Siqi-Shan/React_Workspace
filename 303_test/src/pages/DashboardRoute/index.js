@@ -1,5 +1,6 @@
 import React from "react";
 import { Redirect, Route, Switch, useRouteMatch } from "react-router-dom";
+import BillBoard from "../../components/MainPage/BillBoard";
 import Dashboard from "../../components/MainPage/Dashboard";
 import EditBill from "../../components/MainPage/Forms/EditBill";
 import EditBudget from "../../components/MainPage/Forms/EditBudget";
@@ -42,6 +43,11 @@ const DashboardRoute = () => {
                 exact
                 path={`${match.path}/removebill`}
                 component={RemoveBill}
+            />
+            <Route
+                exact
+                path={`${match.path}/billboard`}
+                component={BillBoard}
             />
             <Route path={match.path} component={Dashboard} />
             <Redirect to={`${match.path}/`} />
