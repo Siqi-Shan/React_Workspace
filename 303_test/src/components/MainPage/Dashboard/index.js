@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+// TODO: Pass budget as prop to avoid duplicate AJAX call
 export default function Dashboard() {
     const classes = useStyles();
 

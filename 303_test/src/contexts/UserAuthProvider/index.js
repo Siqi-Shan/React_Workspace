@@ -3,7 +3,7 @@ import { useHistory } from "react-router";
 import UserAccess from "../../adapters/UserAccess";
 
 export const AuthContext = createContext({
-    username: "",
+    userID: "",
     isSignedIn: false,
     onSignIn: () => {},
     onSignUp: () => {},
@@ -11,7 +11,7 @@ export const AuthContext = createContext({
 
 export const UserAuthProvider = ({ children }) => {
     const history = useHistory();
-    const [username, setUsername] = useState("");
+    const [userID, setUserID] = useState("");
     const [isSignedIn, setSignedIn] = useState(false);
 
     function onSignUpSubmit({ username, password, email }) {
@@ -23,7 +23,7 @@ export const UserAuthProvider = ({ children }) => {
             .then(function (response) {
                 if (response.data.status_code === 200) {
                     setSignedIn(true);
-                    setUsername("Kevin");
+                    setUserID(response.data.user_id);
                     history.push("/dashboard");
                 } else {
                     history.push("/");
@@ -43,7 +43,7 @@ export const UserAuthProvider = ({ children }) => {
             .then(function (response) {
                 if (response.data.status_code === 200) {
                     setSignedIn(true);
-                    setUsername("Kevin");
+                    setUserID(response.data.user_id);
                     history.push("/dashboard");
                 } else {
                     history.push("/");
@@ -53,12 +53,16 @@ export const UserAuthProvider = ({ children }) => {
             .catch(function (error) {
                 console.log(error);
             });
+
+        // setSignedIn(true);
+        // setUserID(0);
+        // history.push("/dashboard");
     }
 
     return (
         <AuthContext.Provider
             value={{
-                username: username,
+                userID: userID,
                 isSignedIn: isSignedIn,
                 onSignIn: onSignInSubmit,
                 onSignUp: onSignUpSubmit,

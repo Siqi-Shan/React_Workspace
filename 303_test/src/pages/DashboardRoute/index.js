@@ -7,6 +7,7 @@ import EditDebt from "../../components/MainPage/Forms/EditDebt";
 import NewBill from "../../components/MainPage/Forms/NewBill";
 import NewBudget from "../../components/MainPage/Forms/NewBudget";
 import NewDebt from "../../components/MainPage/Forms/NewDebt";
+import RemoveBill from "../../components/MainPage/Forms/RemoveBill";
 import RemoveDebt from "../../components/MainPage/Forms/RemoveDebt";
 
 const DashboardRoute = () => {
@@ -36,6 +37,11 @@ const DashboardRoute = () => {
                 exact
                 path={`${match.path}/removedebt`}
                 component={RemoveDebt}
+            />
+            <Route
+                exact
+                path={`${match.path}/removebill`}
+                component={RemoveBill}
             />
             <Route path={match.path} component={Dashboard} />
             <Redirect to={`${match.path}/`} />

@@ -1,6 +1,4 @@
-import DateFnsUtils from "@date-io/date-fns";
 import Avatar from "@material-ui/core/Avatar";
-import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -10,12 +8,10 @@ import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import AccountBalanceWalletRoundedIcon from "@material-ui/icons/AccountBalanceWalletRounded";
-import {
-    KeyboardDatePicker,
-    MuiPickersUtilsProvider,
-} from "@material-ui/pickers";
-import "date-fns";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
+import UserAccess from "../../../../adapters/UserAccess";
+import { AuthContext } from "../../../../contexts/UserAuthProvider";
 
 const useStyles = makeStyles((theme) => ({
     root: {},
@@ -62,8 +58,9 @@ export default function NewBudget() {
     const [input, setInput] = useState({
         amount: "",
     });
-    const [selectedDate, handleDateChange] = useState(new Date());
     const classes = useStyles();
+    const authContext = useContext(AuthContext);
+    const history = useHistory();
 
     const onInputChange = (e) => {
         const target = e.target;
@@ -80,11 +77,23 @@ export default function NewBudget() {
         setInput({
             amount: "",
         });
-        handleDateChange(new Date());
     };
 
     const onFormSubmit = (e) => {
         e.preventDefault();
+
+        (async () => {
+            const response = await UserAccess.post("/edit-budget.php", {
+                user_id: authContext.userID,
+                budget: input.amount,
+            });
+
+            if (response.data.status_code === 200) {
+                history.push("/dashboard");
+            } else {
+                alert(response.data.message);
+            }
+        })();
     };
 
     return (
@@ -118,27 +127,13 @@ export default function NewBudget() {
                                     $
                                 </InputAdornment>
                             }
-                            labelWidth={60}
+                            labelWidth={70}
                             color="secondary"
                             name="amount"
+                            type="number"
                             required
+                            autoFocus
                         />
-                    </FormControl>
-                    <FormControl className={classes.margin} variant="outlined">
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <KeyboardDatePicker
-                                autoOk
-                                variant="inline"
-                                inputVariant="outlined"
-                                label="Budget Time"
-                                format="MM/dd/yyyy"
-                                value={selectedDate}
-                                InputAdornmentProps={{ position: "start" }}
-                                onChange={(date) => handleDateChange(date)}
-                                color="secondary"
-                                required
-                            />
-                        </MuiPickersUtilsProvider>
                     </FormControl>
                     <Button
                         type="submit"
@@ -147,7 +142,7 @@ export default function NewBudget() {
                         color="primary"
                         className={classes.submit}
                     >
-                        Add This Budget!
+                        Add Budget!
                     </Button>
                     <Button
                         fullWidth
@@ -158,12 +153,6 @@ export default function NewBudget() {
                     >
                         Reset
                     </Button>
-                    <Box
-                        borderBottom={2}
-                        className={classes.border}
-                        mt={2}
-                        mb={2}
-                    />
                 </form>
             </Paper>
         </div>

@@ -46,7 +46,7 @@ export default function BudgetProgress(props) {
                 className={classes.infoContainer}
             >
                 <Typography variant="body2" className={classes.info}>
-                    {`${Math.round(props.value)}% of Budget Target`}
+                    {`${Math.round(props.value)}% of Budget Spent`}
                 </Typography>
             </Grid>
         </Grid>

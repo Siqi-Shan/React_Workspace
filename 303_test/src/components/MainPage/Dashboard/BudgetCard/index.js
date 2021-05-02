@@ -8,8 +8,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import EditIcon from "@material-ui/icons/Edit";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useRouteMatch } from "react-router-dom";
+import UserAccess from "../../../../adapters/UserAccess";
+import { AuthContext } from "../../../../contexts/UserAuthProvider";
 import BudgetProgress from "./BudgetProgress";
 
 const useStyles = makeStyles((theme) => ({
@@ -59,6 +61,46 @@ const useStyles = makeStyles((theme) => ({
 export default function BudgetCard() {
     const classes = useStyles();
     const match = useRouteMatch();
+    const authContext = useContext(AuthContext);
+    const [budget, setBudget] = useState("Loading...");
+    const [balance, setBalance] = useState(0);
+
+    useEffect(() => {
+        // TODO: Run all AJAX together to avoid duplicate render
+        (async () => {
+            const response = await UserAccess.post("/get-budget.php", {
+                user_id: authContext.userID,
+            });
+
+            if (response.data.status_code === 200) {
+                setBudget(`$ ${response.data.budget.toFixed(2)}`);
+            } else if (response.data.status_code === 401) {
+                setBudget("No Budget");
+            } else {
+                alert("Budget Loading Error. Please Reload Page.");
+            }
+
+            const bill_response = await UserAccess.post("/get-total-bill.php", {
+                user_id: authContext.userID,
+            });
+
+            if (bill_response.data.status_code === 200) {
+                if (response.data.budget) {
+                    setBalance(
+                        (
+                            (bill_response.data.total_bill /
+                                response.data.budget) *
+                            100
+                        ).toFixed(2)
+                    );
+                }
+            } else if (bill_response.data.status_code === 401) {
+                alert(bill_response.data.message);
+            } else {
+                setBalance(0);
+            }
+        })();
+    }, [authContext.userID]);
 
     return (
         <Card className={classes.root} raised>
@@ -73,13 +115,24 @@ export default function BudgetCard() {
                             Your Budget Tracking
                         </Typography>
                         <Typography variant="h5" component="h2">
-                            April, 2021
+                            {new Date().toLocaleDateString("en-US", {
+                                year: "numeric",
+                                month: "long",
+                            })}
                         </Typography>
                         <Typography
                             className={classes.pos}
                             color="textSecondary"
                         >
-                            Updated 12:00:00 PM, 4/23/2021
+                            Updated{" "}
+                            {new Date().toLocaleDateString("en-US", {
+                                weekday: "long",
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                                hour: "numeric",
+                                minute: "numeric",
+                            })}
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={12} md={12} lg={true}>
@@ -96,17 +149,17 @@ export default function BudgetCard() {
                             color="textSecondary"
                             gutterBottom
                         >
-                            Current Balance
+                            Current Budget
                         </Typography>
                         <Typography
                             variant="h5"
                             component="h2"
                             className={classes.budgetNum}
                         >
-                            $ 999.99
+                            {budget}
                         </Typography>
                         <div className={classes.budgetProgress}>
-                            <BudgetProgress value={50} />
+                            <BudgetProgress value={balance} />
                         </div>
                     </Grid>
                     <Grid item xs={12} sm={12} md={12} lg={12}>

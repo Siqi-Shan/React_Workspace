@@ -6,10 +6,13 @@ import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
 import QueueIcon from "@material-ui/icons/Queue";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useRouteMatch } from "react-router-dom";
+import UserAccess from "../../../../adapters/UserAccess";
+import { AuthContext } from "../../../../contexts/UserAuthProvider";
 import BudgetProportion from "./BudgetProportion";
 
 const useStyles = makeStyles((theme) => ({
@@ -59,6 +62,38 @@ const useStyles = makeStyles((theme) => ({
 export default function BudgetCard() {
     const classes = useStyles();
     const match = useRouteMatch();
+    const authContext = useContext(AuthContext);
+    const [billInfo, setBillInfo] = useState({
+        bill_id: "",
+        bill_amount: "Loading...",
+        date: "Loading...",
+        comment: "",
+    });
+
+    useEffect(() => {
+        (async () => {
+            const response = await UserAccess.post("/get-current-bill.php", {
+                user_id: authContext.userID,
+            });
+
+            if (response.data.status_code === 200) {
+                setBillInfo({
+                    bill_id: response.data.bill_id,
+                    bill_amount: response.data.bill_amount,
+                    date: response.data.date,
+                    comment: response.data.comment,
+                });
+            } else if (response.data.status_code === 500) {
+                setBillInfo({
+                    bill_amount: "No Bill Available",
+                    date: "Please Add New Bill",
+                    comment: "",
+                });
+            } else {
+                alert(response.data.message);
+            }
+        })();
+    }, [authContext.userID]);
 
     return (
         <Card className={classes.root} raised>
@@ -73,13 +108,13 @@ export default function BudgetCard() {
                             Most Recent Bill
                         </Typography>
                         <Typography variant="h5" component="h2">
-                            April, 2021
+                            {billInfo.date}
                         </Typography>
                         <Typography
                             className={classes.pos}
                             color="textSecondary"
                         >
-                            Time: 12:00:00 PM, 4/23/2021
+                            {billInfo.comment}
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={12} md={12} lg={true}>
@@ -103,7 +138,7 @@ export default function BudgetCard() {
                             component="h2"
                             className={classes.budgetNum}
                         >
-                            $ 99.99
+                            $ {` ${billInfo.bill_amount}`}
                         </Typography>
                         <div className={classes.budgetProgress}>
                             <BudgetProportion value={10} />
@@ -122,10 +157,13 @@ export default function BudgetCard() {
                 <ButtonGroup variant="contained" color="secondary" fullWidth>
                     <Button startIcon={<EditIcon />}>
                         <Link
-                            to={`${match.path}/editbill`}
+                            to={{
+                                pathname: `${match.path}/editbill`,
+                                search: `?id=${billInfo.bill_id}`,
+                            }}
                             className={classes.routeLink}
                         >
-                            Edit Most Current Bill
+                            Edit This Bill
                         </Link>
                     </Button>
                     <Button startIcon={<QueueIcon />}>
@@ -134,6 +172,14 @@ export default function BudgetCard() {
                             className={classes.routeLink}
                         >
                             Add a New Bill
+                        </Link>
+                    </Button>
+                    <Button startIcon={<DeleteForeverIcon />}>
+                        <Link
+                            to={`${match.path}/removebill`}
+                            className={classes.routeLink}
+                        >
+                            Remove This Bill
                         </Link>
                     </Button>
                 </ButtonGroup>

@@ -16,7 +16,10 @@ import {
     MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import "date-fns";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
+import UserAccess from "../../../../adapters/UserAccess";
+import { AuthContext } from "../../../../contexts/UserAuthProvider";
 
 const useStyles = makeStyles((theme) => ({
     root: {},
@@ -67,6 +70,8 @@ export default function NewBill() {
     });
     const [selectedDate, handleDateChange] = useState(new Date());
     const classes = useStyles();
+    const authContext = useContext(AuthContext);
+    const history = useHistory();
 
     const onInputChange = (e) => {
         const target = e.target;
@@ -90,6 +95,22 @@ export default function NewBill() {
 
     const onFormSubmit = (e) => {
         e.preventDefault();
+
+        (async () => {
+            const response = await UserAccess.post("/add-bill.php", {
+                user_id: authContext.userID,
+                amount: input.amount,
+                comment: input.comment,
+                people: input.people,
+                date: new Date(selectedDate).toISOString().substr(0, 10),
+            });
+
+            if (response.data.status_code === 200) {
+                history.push("/dashboard");
+            } else {
+                alert(response.data.message);
+            }
+        })();
     };
 
     return (
@@ -126,6 +147,7 @@ export default function NewBill() {
                             labelWidth={60}
                             color="secondary"
                             name="amount"
+                            type="number"
                             required
                         />
                     </FormControl>
@@ -136,7 +158,7 @@ export default function NewBill() {
                                 variant="inline"
                                 inputVariant="outlined"
                                 label="Bill Time"
-                                format="MM/dd/yyyy"
+                                format="yyyy-MM-dd"
                                 value={selectedDate}
                                 InputAdornmentProps={{ position: "start" }}
                                 onChange={(date) => handleDateChange(date)}

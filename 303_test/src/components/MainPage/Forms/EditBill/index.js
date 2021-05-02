@@ -1,6 +1,5 @@
 import DateFnsUtils from "@date-io/date-fns";
 import Avatar from "@material-ui/core/Avatar";
-import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -17,6 +16,8 @@ import {
 } from "@material-ui/pickers";
 import "date-fns";
 import React, { useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import UserAccess from "../../../../adapters/UserAccess";
 
 const useStyles = makeStyles((theme) => ({
     root: {},
@@ -67,6 +68,10 @@ export default function EditBill() {
     });
     const [selectedDate, handleDateChange] = useState(new Date());
     const classes = useStyles();
+    const history = useHistory();
+    const { search } = useLocation();
+
+    const billID = new URLSearchParams(search).get("id");
 
     const onInputChange = (e) => {
         const target = e.target;
@@ -90,6 +95,24 @@ export default function EditBill() {
 
     const onFormSubmit = (e) => {
         e.preventDefault();
+
+        (async () => {
+            const response = await UserAccess.post("/edit-bill.php", {
+                bill_id: billID,
+                amount: input.amount,
+                comment: input.comment,
+                people: input.people,
+                date: new Date(selectedDate).toISOString().substr(0, 10),
+            });
+
+            if (response.data.status_code === 200) {
+                history.push("/dashboard");
+            } else if (response.data.status_code === 500) {
+                alert(response.data.message);
+            } else if (response.data.status_code === 401) {
+                alert(response.data.message);
+            }
+        })();
     };
 
     return (
@@ -126,6 +149,7 @@ export default function EditBill() {
                             labelWidth={60}
                             color="secondary"
                             name="amount"
+                            type="number"
                             required
                         />
                     </FormControl>
@@ -194,12 +218,6 @@ export default function EditBill() {
                     >
                         Reset
                     </Button>
-                    <Box
-                        borderBottom={2}
-                        className={classes.border}
-                        mt={2}
-                        mb={2}
-                    />
                 </form>
             </Paper>
         </div>
