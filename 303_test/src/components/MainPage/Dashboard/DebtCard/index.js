@@ -6,11 +6,11 @@ import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
-import QueueIcon from "@material-ui/icons/Queue";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useRouteMatch } from "react-router-dom";
+import UserAccess from "../../../../adapters/UserAccess";
+import { AuthContext } from "../../../../contexts/UserAuthProvider";
 import DebtProportion from "./DebtProportion";
 
 const useStyles = makeStyles((theme) => ({
@@ -60,6 +60,43 @@ const useStyles = makeStyles((theme) => ({
 export default function DebtCard() {
     const classes = useStyles();
     const match = useRouteMatch();
+    const authContext = useContext(AuthContext);
+    const [totalDebt, setTotalDebt] = useState("Loading...");
+    const [balance, setBalance] = useState(0);
+
+    useEffect(() => {
+        (async () => {
+            const response = await UserAccess.post("/get-total-debt.php", {
+                user_id: authContext.userID,
+            });
+
+            if (response.data.status_code === 200) {
+                setTotalDebt(response.data.total_debt.toFixed(2));
+            } else if (response.data.status_code === 500) {
+                setTotalDebt(0);
+            } else {
+                alert(response.data.message);
+            }
+
+            const budget_response = await UserAccess.post("/get-budget.php", {
+                user_id: authContext.userID,
+            });
+
+            if (budget_response.data.status_code === 200) {
+                if (response.data.total_debt) {
+                    setBalance(
+                        (
+                            (response.data.total_debt /
+                                budget_response.data.budget) *
+                            100
+                        ).toFixed(2)
+                    );
+                }
+            } else {
+                setBalance(0);
+            }
+        })();
+    }, [authContext.userID]);
 
     return (
         <Card className={classes.root} raised>
@@ -80,7 +117,15 @@ export default function DebtCard() {
                             className={classes.pos}
                             color="textSecondary"
                         >
-                            Updated 12:00:00 PM, 4/23/2021
+                            Updated{" "}
+                            {new Date().toLocaleDateString("en-US", {
+                                weekday: "long",
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                                hour: "numeric",
+                                minute: "numeric",
+                            })}
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={12} md={12} lg={true}>
@@ -104,10 +149,10 @@ export default function DebtCard() {
                             component="h2"
                             className={classes.budgetNum}
                         >
-                            $ 159.99
+                            $ {` ${totalDebt}`}
                         </Typography>
                         <div className={classes.budgetProgress}>
-                            <DebtProportion value={45} />
+                            <DebtProportion value={balance} />
                         </div>
                     </Grid>
                     <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -121,28 +166,12 @@ export default function DebtCard() {
             </CardContent>
             <CardContent>
                 <ButtonGroup variant="contained" color="secondary" fullWidth>
-                    <Button startIcon={<QueueIcon />}>
-                        <Link
-                            to={`${match.path}/newdebt`}
-                            className={classes.routeLink}
-                        >
-                            Add a New Debt
-                        </Link>
-                    </Button>
                     <Button startIcon={<EditIcon />}>
                         <Link
                             to={`${match.path}/editdebt`}
                             className={classes.routeLink}
                         >
-                            Edit a Debt Relation
-                        </Link>
-                    </Button>
-                    <Button startIcon={<DeleteForeverIcon />}>
-                        <Link
-                            to={`${match.path}/removedebt`}
-                            className={classes.routeLink}
-                        >
-                            Remove a Debt Relation
+                            Edit Debt Relation
                         </Link>
                     </Button>
                 </ButtonGroup>

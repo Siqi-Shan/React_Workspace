@@ -7,11 +7,9 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import EditIcon from "@material-ui/icons/Edit";
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import { Link, useRouteMatch } from "react-router-dom";
-import UserAccess from "../../../../adapters/UserAccess";
-import { AuthContext } from "../../../../contexts/UserAuthProvider";
-import DebtProgress from "./DebtProgress";
+import DebtProgress from "../../Dashboard/RelationCard/DebtProgress";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -32,6 +30,11 @@ const useStyles = makeStyles((theme) => ({
     budgetNum: {
         marginTop: 0,
         color: theme.palette.info.dark,
+        fontWeight: 500,
+    },
+    budgetNumNeg: {
+        marginTop: 0,
+        color: theme.palette.error.main,
         fontWeight: 500,
     },
     budgetProgress: {
@@ -57,60 +60,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function BudgetCard() {
+export default function DebtDetail(props) {
     const classes = useStyles();
     const match = useRouteMatch();
-    const authContext = useContext(AuthContext);
-    const [debtInfo, setDebtInfo] = useState({
-        username: "Loading...",
-        amount: "Loading...",
-    });
-    const [balance, setBalance] = useState(0);
-
-    useEffect(() => {
-        (async () => {
-            const response = await UserAccess.post("/get-highest-debt.php", {
-                user_id: authContext.userID,
-            });
-
-            if (response.data.status_code === 200) {
-                setDebtInfo({
-                    username: response.data.username,
-                    amount: response.data.amount.toFixed(2),
-                });
-            } else if (response.data.status_code === 500) {
-                setDebtInfo({
-                    username: "No Debt Relations",
-                    amount: "Please Add New Debt",
-                });
-            } else {
-                alert(response.data.message);
-            }
-
-            const totalDebt_response = await UserAccess.post(
-                "/get-total-debt.php",
-                {
-                    user_id: authContext.userID,
-                }
-            );
-
-            if (totalDebt_response.data.status_code === 200) {
-                if (response.data.amount) {
-                    setBalance(
-                        (
-                            (response.data.amount /
-                                totalDebt_response.data.total_debt) *
-                            100
-                        ).toFixed(2)
-                    );
-                }
-            } else if (totalDebt_response.data.status_code === 500) {
-                setBalance(0);
-            } else {
-                alert(totalDebt_response.data.message);
-            }
-        })();
-    }, [authContext.userID]);
+    const { id, amount, username, balance } = props;
 
     return (
         <Card className={classes.root} raised>
@@ -122,10 +75,10 @@ export default function BudgetCard() {
                             color="textSecondary"
                             gutterBottom
                         >
-                            Highest Debt Relation
+                            Debt Detail
                         </Typography>
                         <Typography variant="h5" component="h2">
-                            {debtInfo.username}
+                            {username}
                         </Typography>
                         <Typography
                             className={classes.pos}
@@ -163,7 +116,7 @@ export default function BudgetCard() {
                             component="h2"
                             className={classes.budgetNum}
                         >
-                            $ {` ${debtInfo.amount}`}
+                            $ {` ${amount}`}
                         </Typography>
                         <div className={classes.budgetProgress}>
                             <DebtProgress value={balance} />
@@ -182,7 +135,10 @@ export default function BudgetCard() {
                 <ButtonGroup variant="contained" color="secondary" fullWidth>
                     <Button startIcon={<EditIcon />}>
                         <Link
-                            to={`${match.path}/editdebt`}
+                            to={{
+                                pathname: "/dashboard/editdebt",
+                                search: `?id=${id}`,
+                            }}
                             className={classes.routeLink}
                         >
                             Edit This Person's Debt

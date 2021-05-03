@@ -1,5 +1,4 @@
 import Avatar from "@material-ui/core/Avatar";
-import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -9,11 +8,12 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 import Paper from "@material-ui/core/Paper";
 import Select from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import CreditCardIcon from "@material-ui/icons/CreditCard";
-import "date-fns";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import UserAccess from "../../../../adapters/UserAccess";
+import { AuthContext } from "../../../../contexts/UserAuthProvider";
 
 const useStyles = makeStyles((theme) => ({
     root: {},
@@ -60,9 +60,39 @@ export default function EditDebt() {
     const [input, setInput] = useState({
         amount: "",
         people: "",
-        comment: "",
     });
+    const [userList, setUserList] = useState([]);
     const classes = useStyles();
+    const authContext = useContext(AuthContext);
+    const history = useHistory();
+    const { search } = useLocation();
+
+    const debtID = new URLSearchParams(search).get("id"); // Reserve for refactor
+
+    useEffect(() => {
+        (async () => {
+            const response = await UserAccess.post("/all-user.php");
+
+            if (response.data.status_code === 200) {
+                setUserList(response.data.users);
+            } else {
+                alert(response.data.message);
+                history.push("/");
+            }
+        })();
+    }, [authContext.userID]);
+
+    const getUserList = () => {
+        const users = userList
+            .filter((element) => {
+                return element[0] != authContext.userID;
+            })
+            .map((element) => {
+                return <MenuItem value={element[0]}>{element[1]}</MenuItem>;
+            });
+
+        return users;
+    };
 
     const onInputChange = (e) => {
         const target = e.target;
@@ -85,6 +115,20 @@ export default function EditDebt() {
 
     const onFormSubmit = (e) => {
         e.preventDefault();
+
+        (async () => {
+            const response = await UserAccess.post("/add-debt.php", {
+                payer_id: authContext.userID,
+                receiver_id: input.people,
+                amount: input.amount,
+            });
+
+            if (response.data.status_code === 200) {
+                history.push("/dashboard/debtboard");
+            } else {
+                alert(response.data.message);
+            }
+        })();
     };
 
     return (
@@ -94,7 +138,7 @@ export default function EditDebt() {
                     <CreditCardIcon style={{ fontSize: 55 }} />
                 </Avatar>
                 <Typography component="h1" variant="h4">
-                    Edit This Debt
+                    Edit Debt Relations
                 </Typography>
                 <form className={classes.form} onSubmit={onFormSubmit}>
                     <FormControl
@@ -143,28 +187,10 @@ export default function EditDebt() {
                             onChange={(e) => onInputChange(e)}
                             label="Debt Person"
                             color="secondary"
+                            required
                         >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
-                            <MenuItem value="John">John</MenuItem>
-                            <MenuItem value="Jane">Jane</MenuItem>
-                            <MenuItem value="Tom">Tom</MenuItem>
+                            {getUserList()}
                         </Select>
-                    </FormControl>
-                    <FormControl fullWidth className={classes.margin}>
-                        <TextField
-                            id="outlined-multiline-static"
-                            label="Debt Comments"
-                            multiline
-                            rows={3}
-                            variant="outlined"
-                            name="comment"
-                            placeholder="e.g. location etc."
-                            color="secondary"
-                            value={input.comment}
-                            onChange={(e) => onInputChange(e)}
-                        />
                     </FormControl>
                     <Button
                         type="submit"
@@ -184,12 +210,6 @@ export default function EditDebt() {
                     >
                         Reset
                     </Button>
-                    <Box
-                        borderBottom={2}
-                        className={classes.border}
-                        mt={2}
-                        mb={2}
-                    />
                 </form>
             </Paper>
         </div>

@@ -2,6 +2,7 @@ import React from "react";
 import { Redirect, Route, Switch, useRouteMatch } from "react-router-dom";
 import BillBoard from "../../components/MainPage/BillBoard";
 import Dashboard from "../../components/MainPage/Dashboard";
+import DebtBoard from "../../components/MainPage/DebtBoard";
 import EditBill from "../../components/MainPage/Forms/EditBill";
 import EditBudget from "../../components/MainPage/Forms/EditBudget";
 import EditDebt from "../../components/MainPage/Forms/EditDebt";
@@ -48,6 +49,11 @@ const DashboardRoute = () => {
                 exact
                 path={`${match.path}/billboard`}
                 component={BillBoard}
+            />
+            <Route
+                exact
+                path={`${match.path}/debtboard`}
+                component={DebtBoard}
             />
             <Route path={match.path} component={Dashboard} />
             <Redirect to={`${match.path}/`} />

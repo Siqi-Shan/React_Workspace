@@ -46,7 +46,7 @@ export default function DebtProportion(props) {
                 className={classes.infoContainer}
             >
                 <Typography variant="body2" className={classes.info}>
-                    {`${Math.round(props.value)}% of Current Balance`}
+                    {`${Math.round(props.value)}% of Current Budget`}
                 </Typography>
             </Grid>
         </Grid>

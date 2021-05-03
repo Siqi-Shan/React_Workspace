@@ -10,12 +10,12 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
+import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import DashboardIcon from "@material-ui/icons/Dashboard";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import DescriptionIcon from "@material-ui/icons/Description";
 import EditIcon from "@material-ui/icons/Edit";
 import ListIcon from "@material-ui/icons/List";
@@ -216,19 +216,19 @@ export default function MainPage() {
                 <Divider />
                 <List>
                     <Link
-                        to={`${match.path}/addnewbill`}
+                        to={`${match.path}/debtboard`}
                         className={classes.routeLink}
                         replace
                     >
                         <ListItem button>
                             <ListItemIcon>
-                                <AttachMoneyIcon />
+                                <AccountBalanceIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Add New Bill" />
+                            <ListItemText primary="Debts Tracking" />
                         </ListItem>
                     </Link>
                     <Link
-                        to={`${match.path}/editbill`}
+                        to={`${match.path}/editdebt`}
                         className={classes.routeLink}
                         replace
                     >
@@ -236,22 +236,22 @@ export default function MainPage() {
                             <ListItemIcon>
                                 <EditIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Edit Bill" />
+                            <ListItemText primary="Edit Debt" />
                         </ListItem>
                     </Link>
                 </List>
                 <Divider />
                 <List>
                     <Link
-                        to={`${match.path}/removedebt`}
+                        to={`${match.path}/editbudget`}
                         className={classes.routeLink}
                         replace
                     >
                         <ListItem button>
                             <ListItemIcon>
-                                <DeleteForeverIcon />
+                                <AccountBalanceWalletIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Remove Debt" />
+                            <ListItemText primary="Manage Budget" />
                         </ListItem>
                     </Link>
                 </List>
