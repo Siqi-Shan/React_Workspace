@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-    baseURL: "http://303.itpwebdev.com/~kshan/fp_test/backend",
+    baseURL: "https://itp-404.herokuapp.com/",
 });
